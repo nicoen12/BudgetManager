@@ -8,7 +8,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Clickbergs Budget Manager</h1>
-    <main></main>
+    <header>
+        <h2>Clickbergs Budget Manager</h2>
+        <h4 id="importLabel">
+            <input type="file" name="import" id="import" style="display: none;">
+            Import
+        </h4>
+        <h4 id="exportLabel">
+            <a href="/index.html" id="export" download style="display: none;"></a>
+            Export
+        </h4>
+    </header>
+    <main class="border">
+        <div id="infopanel">
+            left
+        </div>
+        <div id="graphicpanel">
+            <canvas></canvas>
+        </div>
+    </main>
 </body>
 </html>
