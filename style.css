@@ -2,6 +2,45 @@ body {
     margin: 0;
     overflow: hidden;
     font-family: "Comic Sans MS";
-    color: greenyellow;
-    background: crimson;
+    background: black;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    height: 4em;
+    background: #555;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#importLabel:hover, #exportLabel:hover {
+    color: gray;
+}
+
+#importLabel, #exportLabel {
+    cursor: pointer;
+}
+
+main {
+    margin: 5px;
+    flex-grow: 1;
+}
+
+#infopanel {
+    width: 40%;
+    float: left;
+}
+
+#graphicpanel {
+    width: 60%;
+    float: right;
+    height: 100%;
+}
+
+.border {
+    border: white solid;
 }
