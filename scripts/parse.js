@@ -1,4 +1,5 @@
-import currency from "./libs/currency.js"
+import currency from "../libs/currency.js"
+import * as CSV from "../libs/csv-parser.js"
 
 const fromCurrency = currency
 
@@ -7,3 +8,11 @@ const fromDate = (/** @type {String} */ str) => {
     return Date.UTC(y, m, d)
 }
 
+class Parser {
+    constructor() {
+        
+    }
+
+}
+
+export { Parser }

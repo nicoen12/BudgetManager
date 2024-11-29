@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budget Manager</title>
-    <script src="main.js" async></script>
+    <script src="main.js" type="module" async></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,11 +20,16 @@
         </h4>
     </header>
     <main class="border">
-        <div id="infopanel">
-            left
+        <div id="infopanel" class="border">
+            <div class="subpanel">
+                >
+            </div>
+            <div class="subpanel">
+                >
+            </div>
         </div>
         <div id="graphicpanel">
-            <canvas></canvas>
+            <canvas class="border"></canvas>
         </div>
     </main>
 </body>

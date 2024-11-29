@@ -1,3 +1,5 @@
+import { Parser } from "./parse.js"
+
 class Profile {
     #categoryNames = []
     #fieldNames = []
@@ -5,6 +7,7 @@ class Profile {
     constructor(fields, categories=null) {
         this.#fieldNames = fields
         this.#categoryNames = categories ? categories : ["Groceries", "Clothes", "Recurring", "Salary", "Misc.", "Hidden"]
+        this.parser = new Parser()
     }
 
     addFieldName(field) {
@@ -18,3 +21,5 @@ class Profile {
 
 
 }
+
+export { Profile }

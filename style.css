@@ -3,7 +3,7 @@ body {
     overflow: hidden;
     font-family: "Comic Sans MS";
     background: black;
-    color: white;
+    color: rgb(98, 98, 98);
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -33,14 +33,27 @@ main {
 #infopanel {
     width: 40%;
     float: left;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.subpanel {
+    background: gray;
+    padding: 1px 5px;
+    border-radius: 2px;
+    margin: 4px;
 }
 
 #graphicpanel {
     width: 60%;
     float: right;
     height: 100%;
+    box-sizing: border-box;
 }
 
 .border {
     border: white solid;
 }
+
