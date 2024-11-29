@@ -1,3 +1,10 @@
+/*
+ currency.js - v2.0.4
+ http://scurker.github.io/currency.js
+
+ Copyright (c) 2021 Jason Wilson
+ Released under MIT license
+*/
 const defaults = {
   symbol: '$',
   separator: ',',
