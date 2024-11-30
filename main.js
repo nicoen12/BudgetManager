@@ -1,5 +1,6 @@
 import { Profile } from "./scripts/profile.js"
 import { drawPie, drawColors } from "./scripts/pie.js"
+import { createFieldTypeForm } from "./scripts/misc.js"
 
 // Element selection
 
@@ -8,6 +9,8 @@ const importFileElement = document.querySelector("#import")
 const exportFileElement = document.querySelector("#export")
 const importFileLabel = document.querySelector("#importLabel")
 const exportFileLabel = document.querySelector("#exportLabel")
+
+const infopanel = document.getElementById("infopanel")
 
 const canvas = document.querySelector("canvas")
 
@@ -52,6 +55,10 @@ function main() {
         "C" : "#F0A7A0",
         "D" : "#657ABC"
     }
+
+    const f = createFieldTypeForm(v => console.log(v), ["A", "B", "C"], [{"A" : 3, "B" : 2, "C" : 1}, {"A" : 3, "B" : 2, "C" : 1}, {"A" : 3, "B" : 2, "C" : 1}])
+    infopanel.firstElementChild.append(f)    
+
     drawPie(ctx, data, colors, 140, 100, 80)
     drawColors(ctx, colors, 0, 0)
 }

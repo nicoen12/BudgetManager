@@ -15,7 +15,8 @@ function drawPie(context, data, colors, cx, cy, r) {
         const d_theta = data[key] / sum * 2 * Math.PI
         context.fillStyle = colors[key]
         context.beginPath()
-        context.arc(0, 0, r, angle, angle + d_theta)
+        // for cleaner borders, will not affect areas
+        context.arc(0, 0, r, angle, angle + d_theta + 0.1)
         context.lineTo(0, 0)
         context.closePath()
         context.fill()
