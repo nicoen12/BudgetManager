@@ -1,9 +1,10 @@
-const tableClasses = []
+const DTYPES = ["Text", "Currency", "Date"]
 
 function createDropdown(options, classList, name) {
     const elem = document.createElement("select")    
     elem.name = name
     classList.forEach(cls => elem.classList.add(cls))
+
     for (const opt of options) {
         const m = document.createElement("option")
         m.value = opt
@@ -14,14 +15,13 @@ function createDropdown(options, classList, name) {
 }
 
 function createFieldTypeForm(callback, fields, sampleRows) {
-    const dtypes = ["Date", "Currency", "Text"]
     const form = document.createElement("form")
     form.onsubmit = e => {
         e.preventDefault()
         const data = new FormData(form)
         callback(data)
     }
-    const dropDownInputs = fields.map(v => createDropdown(dtypes, [], v))
+    const dropDownInputs = fields.map(v => createDropdown(DTYPES, [], v))
     const table = createTable(fields, sampleRows)
     const dropDownRow = document.createElement("tr")
     dropDownInputs.forEach(element => {
@@ -39,6 +39,7 @@ function createFieldTypeForm(callback, fields, sampleRows) {
 
 function createTable(headers, rows) {
     const table = document.createElement("table")
+    table.classList.add("datatable")
     const header = document.createElement("tr")
     header.innerHTML = headers.map(v => "<th>" + v + "</th>").join("")
     table.appendChild(header)

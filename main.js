@@ -10,8 +10,6 @@ const exportFileElement = document.querySelector("#export")
 const importFileLabel = document.querySelector("#importLabel")
 const exportFileLabel = document.querySelector("#exportLabel")
 
-const infopanel = document.getElementById("infopanel")
-
 const canvas = document.querySelector("canvas")
 
 // Instanciating
@@ -19,8 +17,8 @@ const canvas = document.querySelector("canvas")
 const profile = new Profile()
 
 const ctx = canvas?.getContext("2d", {antialias: true})
-canvas.height = 200
-canvas.width = 300
+canvas.height = 600
+canvas.width = 400
 
 // Event Listeners
 
@@ -31,16 +29,13 @@ if (importFileElement && importFileLabel && exportFileElement && exportFileLabel
     exportFileLabel.onclick = () => exportFileElement.click()
     
     // @ts-ignore
-    importFileElement.onclick = () => importFileElement.files[0]
+    importFileElement.onchange = () => profile.handleFile(importFileElement.files[0])
 
 }
 
 // Other
 
-setInterval(() => {
-    if (!header) return;
-    header.style.color = "#" + Math.floor(Math.random()*16777215).toString(16)
-}, 10000)
+setInterval(() => header.style.color = "#" + Math.floor(Math.random()*16777215).toString(16), 10000)
 
 function main() {
     const data = {
@@ -56,11 +51,14 @@ function main() {
         "D" : "#657ABC"
     }
 
-    const f = createFieldTypeForm(v => console.log(v), ["A", "B", "C"], [{"A" : 3, "B" : 2, "C" : 1}, {"A" : 3, "B" : 2, "C" : 1}, {"A" : 3, "B" : 2, "C" : 1}])
-    infopanel.firstElementChild.append(f)    
+    // const f = createFieldTypeForm(v => console.log(v), ["A", "B", "C"], [{"A" : 3, "B" : 2, "C" : 1}, {"A" : 3, "B" : 2, "C" : 1}, {"A" : 3, "B" : 2, "C" : 1}])
+    // infopanel.firstElementChild.append(f)
 
-    drawPie(ctx, data, colors, 140, 100, 80)
+
+    drawPie(ctx, data, colors, 210, 140, 130)
     drawColors(ctx, colors, 0, 0)
+    drawPie(ctx, {SEEE: 20, Q: 12, G: 9}, {SEEE: "crimson", Q: "orange", G: "red"}, 210, 440, 130)
+    drawColors(ctx, {SEEE: "crimson", Q: "orange", G: "red"}, 0, 300)
 }
 
 

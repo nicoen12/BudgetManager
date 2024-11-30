@@ -44,6 +44,7 @@ main {
     padding: 1px 5px;
     border-radius: 2px;
     margin: 4px;
+    overflow-x: auto;
 }
 
 #graphicpanel {
@@ -57,3 +58,13 @@ main {
     border: white solid;
 }
 
+.datatable {
+    font-family: system-ui, sans-serif;
+    color: whitesmoke;
+    background: #555;
+}
+
+.datatable, .datatable td, .datatable th {
+    border-collapse: collapse;
+    border: #222 solid;
+}

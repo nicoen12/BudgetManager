@@ -29,7 +29,9 @@ class Profile {
         this.#categoryNames.push(category)
     }
 
-
+    handleFile(file) {
+        this.parser.handleFile(file)
+    }
 }
 
 export { Profile }
