@@ -51,4 +51,4 @@ function createTable(headers, rows) {
     return table
 }
 
-export { createFieldTypeForm }
+export { createFieldTypeForm, createDropdown }

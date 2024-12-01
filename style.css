@@ -31,12 +31,13 @@ main {
 }
 
 #infopanel {
+    height: 100%;
     width: 40%;
     float: left;
+
     display: flex;
     flex-direction: column;
-    height: 100%;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
 }
 
 .subpanel {
@@ -48,7 +49,7 @@ main {
 }
 
 #graphicpanel {
-    width: 60%;
+    width: 55%;
     float: right;
     height: 100%;
     box-sizing: border-box;

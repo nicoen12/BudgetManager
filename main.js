@@ -1,6 +1,7 @@
 import { Profile } from "./scripts/profile.js"
 import { drawPie, drawColors } from "./scripts/pie.js"
 import { createFieldTypeForm } from "./scripts/misc.js"
+import { Daterange } from "./scripts/daterange.js"
 
 // Element selection
 
@@ -50,14 +51,17 @@ function main() {
         "C" : "#F0A7A0",
         "D" : "#657ABC"
     }
+    const dr = new Daterange(
+        document.getElementById("settings"), () => alert("!")
+    )
 
     // const f = createFieldTypeForm(v => console.log(v), ["A", "B", "C"], [{"A" : 3, "B" : 2, "C" : 1}, {"A" : 3, "B" : 2, "C" : 1}, {"A" : 3, "B" : 2, "C" : 1}])
     // infopanel.firstElementChild.append(f)
 
 
-    drawPie(ctx, data, colors, 210, 140, 130)
+    drawPie(ctx, data, colors, 210, 140, 110)
     drawColors(ctx, colors, 0, 0)
-    drawPie(ctx, {SEEE: 20, Q: 12, G: 9}, {SEEE: "crimson", Q: "orange", G: "red"}, 210, 440, 130)
+    drawPie(ctx, {SEEE: 20, Q: 12, G: 9}, {SEEE: "crimson", Q: "orange", G: "red"}, 210, 440, 150)
     drawColors(ctx, {SEEE: "crimson", Q: "orange", G: "red"}, 0, 300)
 }
 
