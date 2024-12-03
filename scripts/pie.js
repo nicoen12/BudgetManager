@@ -35,7 +35,7 @@ function drawPie(context, data, colors, cx, cy, r) {
         context.lineTo(0, 0)
         context.closePath()
         context.fill()
-        drawCenteredText(context, key, Math.cos(angle + d_theta / 2) * r / 2, Math.sin(angle + d_theta / 2) * r / 2, 20)
+        drawCenteredText(context, data[key], Math.cos(angle + d_theta / 2) * r / 2, Math.sin(angle + d_theta / 2) * r / 2, 20)
         angle += d_theta;
     }
     context.resetTransform()

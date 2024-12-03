@@ -1,10 +1,15 @@
-body {
+body, html {
     margin: 0;
-    overflow: hidden;
+    padding: 0;
     font-family: "Comic Sans MS";
+    /* font-family: monospace; */
+}
+
+body {
+    height: 100vh;
     background: black;
     color: rgb(98, 98, 98);
-    height: 100vh;
+
     display: flex;
     flex-direction: column;
 }
@@ -26,18 +31,23 @@ header {
 }
 
 main {
-    margin: 5px;
     flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
 }
 
 #infopanel {
-    height: 100%;
-    width: 40%;
-    float: left;
-
+    /* width: 40%; */
     display: flex;
     flex-direction: column;
-    /* box-sizing: border-box; */
+    overflow-y: auto;
+}
+
+#graphicpanel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .subpanel {
@@ -46,17 +56,13 @@ main {
     border-radius: 2px;
     margin: 4px;
     overflow-x: auto;
-}
-
-#graphicpanel {
-    width: 55%;
-    float: right;
-    height: 100%;
-    box-sizing: border-box;
+    flex-shrink: 0;
+    display: block;
 }
 
 .border {
     border: white solid;
+    box-sizing: border-box;
 }
 
 .datatable {
@@ -68,4 +74,8 @@ main {
 .datatable, .datatable td, .datatable th {
     border-collapse: collapse;
     border: #222 solid;
+}
+
+.hideColumn {
+    visibility: collapse;
 }

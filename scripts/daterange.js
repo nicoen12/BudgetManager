@@ -6,8 +6,9 @@ export class Daterange {
     /**
      * @param {Element} elem
      */
-    constructor(elem, callback) {
+    constructor(elem, callback, classList = []) {
         this.element = elem
+        classList.forEach(c => this.element.classList.add(c))
         this.callback = callback
         this.setElement()
     }
@@ -22,7 +23,7 @@ export class Daterange {
         this.end.type = "date"
         this.end.valueAsDate = new Date()
 
-        this.shiftDate(-1, 0, "weeks")
+        this.shiftDate(-1, 0, "week")
 
         this.submit = document.createElement("button")
         this.submit.textContent = "Submit"
@@ -39,7 +40,7 @@ export class Daterange {
         next.onclick = () => this.shiftDate(1, 1, this.timeUnitSelector?.value)
         
         this.element.append(this.start, this.end, this.submit)
-        this.element.appendChild(document.createElement("br"))
+
         this.element.append(prev, this.timeUnitSelector, next)
     }
 

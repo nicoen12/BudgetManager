@@ -51,4 +51,66 @@ function createTable(headers, rows) {
     return table
 }
 
-export { createFieldTypeForm, createDropdown }
+class DynamicTable {
+    constructor(classList, headers) {
+        this.element = document.createElement("table")
+        this.element.classList.add(...classList)
+        this.colgroup = document.createElement("colgroup")
+        this.element.appendChild(this.colgroup)
+
+        this.headers = headers
+        this.columns = new Map()
+        
+        const tr = document.createElement("tr")
+        headers.forEach(header => {
+            const col = document.createElement("col")
+            this.columns.set(header, col)
+            this.colgroup.appendChild(col)
+        })
+        tr.innerHTML = headers.map(header => "<th>" + header + "</th>").join("")        
+
+        this.element.appendChild(tr)
+    }
+    
+    // hideColumn(headerName) {
+    //     this.columns.get(headerName).style.visibility = "collapsed"
+    // }
+
+    // showColumn(headerName) {
+    //     this.columns.get(headerName).style.visibility = "unset"
+    // }
+
+    toggleColumn(headerName) {
+        this.columns.get(headerName).classList.toggle("hideColumn")        
+    }
+
+    appendRow(...data) {
+        for (const row of data) {
+            const tr = document.createElement("tr")
+            tr.innerHTML = row.map(entry => "<td>" + entry + "</td>").join("")
+            this.element.appendChild(tr)
+        }
+    }
+
+    removeRow(n) {
+        const i = n < 0 ? this.element.rows.length + n : n + 1;
+        if (i < 1 || i >= this.element.rows.length) console.error("Row out of bounds!")
+        this.element.deleteRow(i)
+    }
+
+}
+
+class OptionToggler {
+    constructor(options, callback) {
+        this.element = document.createElement("div")
+        for (const opt of options) {
+            const checkbox = document.createElement("input")
+            checkbox.type = "checkbox"
+            checkbox.checked = true
+            checkbox.onchange = () => callback(opt)
+            this.element.append(opt, checkbox, document.createElement("br"))
+        }
+    }
+}
+
+export { createFieldTypeForm, createDropdown, DynamicTable, OptionToggler }

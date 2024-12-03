@@ -52,12 +52,8 @@ function main() {
         "D" : "#657ABC"
     }
     const dr = new Daterange(
-        document.getElementById("settings"), () => alert("!")
+        document.getElementById("dateSelection"), () => alert("!")
     )
-
-    // const f = createFieldTypeForm(v => console.log(v), ["A", "B", "C"], [{"A" : 3, "B" : 2, "C" : 1}, {"A" : 3, "B" : 2, "C" : 1}, {"A" : 3, "B" : 2, "C" : 1}])
-    // infopanel.firstElementChild.append(f)
-
 
     drawPie(ctx, data, colors, 210, 140, 110)
     drawColors(ctx, colors, 0, 0)
