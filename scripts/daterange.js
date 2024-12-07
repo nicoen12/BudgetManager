@@ -1,47 +1,26 @@
-import { createDropdown } from "./misc.js"
+// @ts-nocheck
+import { createDropdownOn } from "./misc.js"
 
 const ONE_WEEK = 7
 
 export class Daterange {
-    /**
-     * @param {Element} elem
-     */
-    constructor(elem, callback, classList = []) {
-        this.element = elem
-        classList.forEach(c => this.element.classList.add(c))
-        this.callback = callback
-        this.setElement()
-    }
-    setElement() {
-        this.element.append("Pick a date range")
 
-        this.start = document.createElement("input")
-        this.start.type = "date"
+    constructor(from_id, to_id, prev_id, next_id, selector_id, callback) {
+        this.start = document.getElementById(from_id)
+        this.end = document.getElementById(to_id)
+        this.unitSelector = document.getElementById(selector_id)
+
         this.start.valueAsDate = new Date()
-        
-        this.end = document.createElement("input")
-        this.end.type = "date"
         this.end.valueAsDate = new Date()
-
         this.shiftDate(-1, 0, "week")
 
-        this.submit = document.createElement("button")
-        this.submit.textContent = "Submit"
-        this.submit.onclick = () => this.callback(...this.getRange())
-        
-        this.timeUnitSelector = createDropdown(["day", "week", "month"], [], "")
+        createDropdownOn(this.unitSelector, ["day", "week", "month"], () => {})
 
-        const prev = document.createElement("button")
-        prev.textContent = "⟵"
-        prev.onclick = () => this.shiftDate(-1, -1, this.timeUnitSelector?.value)
+        this.start.onchange = callback
+        this.end.onchange = callback
         
-        const next = document.createElement("button")
-        next.textContent = "⟶"
-        next.onclick = () => this.shiftDate(1, 1, this.timeUnitSelector?.value)
-        
-        this.element.append(this.start, this.end, this.submit)
-
-        this.element.append(prev, this.timeUnitSelector, next)
+        document.getElementById(prev_id).onclick = () => this.shiftDate(-1, -1, this.unitSelector.value)
+        document.getElementById(next_id).onclick = () => this.shiftDate(1, 1, this.unitSelector.value)
     }
 
     shiftDate(dt0, dt1, unit) {
@@ -54,8 +33,8 @@ export class Daterange {
                 d1Copy.setDate(d1Copy.getDate() + dt1)
                 break;
             case "week":
-                d0Copy.setDate(d0Copy.getDate() + dt0 * 7)
-                d1Copy.setDate(d1Copy.getDate() + dt1 * 7)
+                d0Copy.setDate(d0Copy.getDate() + dt0 * ONE_WEEK)
+                d1Copy.setDate(d1Copy.getDate() + dt1 * ONE_WEEK)
                 break;
             case "month":
                 d0Copy.setMonth(d0Copy.getMonth() + dt0)

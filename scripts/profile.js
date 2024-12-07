@@ -1,107 +1,54 @@
-import { parse } from "../node_modules/csv-parse/dist/esm/sync.js"
 import currency from "../libs/currency.js"
-import { createFieldTypeForm, DynamicTable, OptionToggler } from "./misc.js"
-import { drawColors, drawPie } from "./pie.js"
+import { ChartManager } from "./chartmanager.js"
+import { Daterange } from "./daterange.js"
+import { CategoryPanel, SettingsPanel, TransactionTable } from "./panels.js"
+import { Ruletable } from "./ruletable.js"
 
-const fromCurrency = currency
 
-const fromDate = (/** @type {String} */ str) => {
-    const [d, m, y] = str.split(".").map(Number.parseInt)
-    return Date.UTC(y, m, d)
-}
-
-const defaultCategories = ["Groceries", "Clothes", "Recurring", "Salary", "Misc", "Hidden"]
-
-class ChartManager {
-    /**
-     * @param {HTMLCanvasElement} canvas
-     * @param {Profile} profile
-     */
-    constructor(canvas, profile) {
-        this.canvas = canvas
-        this.context = canvas.getContext("2d")
-        this.profile = profile
-        window.addEventListener("resize", this.onResize)
-    }
-    onResize(event) {
-        if (this.canvas.parentElement?.width != this.canvas.width) {
-            this.canvas.width = this.canvas.parentElement?.width
-        }
-        if (this.canvas.parentElement?.height != this.canvas.height) {
-            this.canvas.height = this.canvas.parentElement?.height
-        }
-        this.draw()
-    }
-
-    draw() {
-        const w = this.canvas.width, h = this.canvas.height
-        const r = Math.min(w / 2, h / 4) * 0.75
-        const {expenses, income, ratio} = this.profile.queryData()
-        // A * ratio = pi * r^2
-        // r = sqrt(ratio * r^2)
-        drawPie(this.context, expenses, this.profile.categoryColors, w / 2, h / 4, ratio < 1 ? r * ratio**0.5 : r)
-        drawPie(this.context, income, this.profile.categoryColors, w / 2, h - h / 4, ratio < 1 ? r : r * ratio**0.5)
-        drawColors(this.context, this.profile.categoryColors, 0, 0)
-        drawColors(this.context, this.profile.categoryColors, 0, h / 2)
-    }
-}
-
-class Categoriser {
-    constructor(parent, categories) {
-
-    }
-    categorise(fieldValueObj) {
-
-    }
-}
-
-class Profile {
+export class Profile {
     queryData() {
-        throw new Error("Method not implemented.")
-    }
-    #categoryNames = []
-    #fieldNames = []
-    #dataEntries = []
+        const [t0, t1] = this.dateSelector.getRange()        
 
-    constructor(fields, categories=defaultCategories) {
-        this.#fieldNames = fields
-        this.#categoryNames = categories
-        this.categoryColors = undefined
-    }
-
-    addFieldName(field) {
-        this.#fieldNames.push(field)
-    }
-
-    addCategory(category) {
-        if (this.#categoryNames.includes(category)) throw new Error("Category already exists!")
-        this.#categoryNames.push(category)
-    }
-
-    handleFile(file) {
-        const reader = new FileReader()        
-        reader.readAsText(file, "ISO-8859-1")
-        reader.onload = () => this.onLoad(reader.result)
-    }
-
-    onLoad(str) {
-        this.data = parse(str, {delimiter: ";", encoding: "utf-8"})
-        this.table = new DynamicTable(["datatable"], this.data[0])
-        this.table.appendRow(...this.data.slice(1, 5))
-        // this.requestFieldDataTypes(Object.keys(this.data[0]), this.data.slice(0, 5))
-        document.getElementById("infopanel").firstElementChild.append(this.table.element)
-        this.options = new OptionToggler(this.data[0], header => {
-            this.table.toggleColumn(header);
-            console.log(header);
+        const transactionsByCategory = this.transactionTable.getInInterval(t0, t1)        
+        const expenses = {}
+        const income = {}
+        
+        transactionsByCategory.forEach((v, k) => {
+            income[k] = v.reduce((acc, record) => acc.add(record[this.settingsPanel.incomeField]), currency(0)).value
+            expenses[k] = v.reduce((acc, record) => acc.subtract(record[this.settingsPanel.expenseField]), currency(0)).value
         })
-        document.getElementById("settings").append(this.options.element)
+
+        const ratio = Object.values(expenses).reduce((acc, e) => acc + e, 0) / Object.values(income).reduce((acc, e) => acc + e, 0)
+
+        return {expenses, income, ratio: (ratio == Infinity ? 1 : ratio)}
     }
 
-    requestFieldDataTypes(fields, sampleRows) {
-        const f = createFieldTypeForm(v => console.log(v), fields, sampleRows)
-        const infopanel = document.getElementById("infopanel")
-        infopanel?.firstElementChild?.append(f)
+    constructor(csvRows, canvas) {
+        const [header, ...rows] = csvRows
+        
+        this.graphic = new ChartManager(canvas, this)
+        
+        this.dateSelector = new Daterange("date-input-start", "date-input-end", "shift-date-prev", "shift-date-next", "time-unit-shift-selector", () => this.graphic.draw())
+        
+        this.transactionTable = new TransactionTable("transaction-table", header, rows, () => this.graphic.draw())
+
+        this.settingsPanel = new SettingsPanel("settings-table", header, x => this.transactionTable.table.toggleColumn(x))
+
+        this.categoryPanel = new CategoryPanel("category-table", "create-category", "add-category", x => this.transactionTable.categoriseCurrent(x))
+
+        this.ruleTable = new Ruletable(
+            x => this.settingsPanel.getParseFunction(x), 
+            "rules-table",
+            "rules-field",
+            "rules-type",
+            "rules-text",
+            "rules-category",
+            "rules-submit"
+        )
+
+        this.transactionTable.categorise = x => this.ruleTable.categorise(x)
+        this.transactionTable.getParseFunction = x => this.settingsPanel.getParseFunction(x)
+        this.transactionTable.getDateField = () => this.settingsPanel.dateField
     }
+
 }
-
-export { Profile }
